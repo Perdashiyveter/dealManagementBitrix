@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from integration_utils.bitrix24.bitrix_user_auth.main_auth import main_auth
 from datetime import datetime
 from .forms import DealForm
@@ -64,7 +64,7 @@ def get_user_deals(but, user_id):
     return deals
 
 
-@main_auth(on_start=True, set_cookie=True)
+@main_auth(on_cookies=True)
 def last_deals(request):
     user = request.bitrix_user
     but = request.bitrix_user_token

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; color: #333; }
+        h1, h2, h3 { color: #222; }
+        a { color: #333; text-decoration: none; }
+        button { padding: 10px 20px; border: none; background-color: #4CAF50; cursor: pointer; border-radius: 5px; color: white; }
+        button:hover { background-color: #45a049; }
+        button a { color: white; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; background: #fff; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        td a:hover { color: #222; }
+        th { background-color: #f2f2f2; }
+        tr:hover { background-color: #f1f1f1; }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover { color: #000; }
+        label { margin: 10px 0; }
+        input, select { padding: 5px; width: 100%; box-sizing: border-box; }
+        .time { display: flex; gap: 10px; }
+        input { width: 50%; }
+    </style>
+</head>
+<body>
+    <h1>Список сотрудников</h1>
+    <button type="button">
+        <a href="{% url 'start_index' %}">Вернуться в меню</a>
+    </button>
+    <button id="openModal">Создать звонок</button>
+    <table>
+        <tr>
+            <th>Отдел</th>
+            <th>Сотрудник</th>
+            <th>Должность</th>
+            <th>Руководители</th>
+            <th>Звонки за 24ч</th>
+        </tr>
+        {% for dep in tree %}
+            {% for emp in dep.employees %}
+            <tr>
+                {% if forloop.first %}
+                    <td rowspan="{{ dep.employees|length }}">{{ dep.department }}</td>
+                {% endif %}
+                <td>
+                    <a href="#" onclick="openEmployee('{{ emp.id }}')">
+                        {{ emp.name }}
+                    </a>
+                </td>
+                <td>{{ emp.work_position }}</td>
+                <td>
+                    {% if emp.managers %}
+                        {{ emp.managers|join:" → " }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+                <td>{{ emp.calls_count }}</td>
+            </tr>
+            {% endfor %}
+        {% endfor %}
+    </table>
+
+    <!-- Модальное окно с формой -->
+    <div id="callModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Создать новый звонок</h3>
+            <form id="callForm" method="post" action="{% url 'add_call' %}">
+                {% csrf_token %}
+                <label>От кого:</label><br>
+                <select name="user_id" required>
+                    {% for emp in unique_employees %}
+                        <option value="{{ emp.id }}">{{ emp.name }}</option>
+                    {% endfor %}
+                </select><br><br>
+                <label>Длительность:</label><br>
+                <div class="time">
+                    <input type="number" name="minutes" min="0" max="60" placeholder="Минуты" required><br><br>
+                    <input type="number" name="seconds" min="0" max="59" placeholder="Секунды" required><br><br>
+                </div>
+                <br>
+                <button type="submit">Создать</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://api.bitrix24.com/api/v1/"></script>
+    <script>
+        function openEmployee(userId) {
+            if (typeof BX24 !== 'undefined') {
+                BX24.openPath("/company/personal/user/" + userId + "/");
+            } else {
+                alert("BX24 SDK не загружен");
+            }
+        }
+        const modal = document.getElementById("callModal");
+        const btn = document.getElementById("openModal");
+        const span = document.querySelector(".close");
+
+        btn.onclick = () => modal.style.display = "block";
+        span.onclick = () => modal.style.display = "none";
+        window.onclick = (event) => { if(event.target == modal) modal.style.display = "none"; };
+    </script>
+</body>
+</html>

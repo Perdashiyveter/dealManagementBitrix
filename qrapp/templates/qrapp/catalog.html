@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог товаров</title>
+        <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; color: #333; }
+        h1, h2 { color: #222; }
+        button { padding: 10px 20px; border: none; background-color: #4CAF50; cursor: pointer; border-radius: 5px; }
+        button:hover { background-color: #45a049; }
+        a { color: white; text-decoration: none; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; background: #fff; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:hover { background-color: #f1f1f1; }
+    </style>
+</head>
+<body>
+    <h1>Каталог товаров</h1>
+
+    <button type="button">
+        <a href="{% url 'start_index' %}">Вернуться в меню</a>
+    </button>
+    <button type="button">
+        <a href="{% url 'qrapp_index' %}">Вернуться к генерации</a>
+    </button>
+
+    {% if products %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in products %}
+                <tr>
+                    <td>{{ p.ID }}</td>
+                    <td>{{ p.NAME }}</td>
+                    <td>{{ p.PRICE }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Каталог пуст.</p>
+    {% endif %}
+</body>
+</html>

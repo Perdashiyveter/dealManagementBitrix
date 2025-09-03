@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f9f9f9;
+            color: #333;
+        }
+
+        h1 {
+            color: #222;
+            margin-bottom: 20px;
+        }
+
+        .product-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 400px;
+        }
+        .product-card img {
+            max-width: 100%;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+        .product-info p {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="product-card">
+        <h1>{{ product.name }}</h1>
+        <div class="product-info">
+            <p><b>ID:</b> {{ product.product_id }}</p>
+            <p><b>Описание:</b> {{ product.description|safe }}</p>
+            <p><b>Цена:</b> {{ product.price }}</p>
+        </div>
+        <img src="{{ product.photo_url }}" alt="{{ product.name }}">
+    </div>
+</body>
+</html>

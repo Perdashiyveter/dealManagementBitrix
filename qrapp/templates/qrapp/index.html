@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Генерация QR-Кода</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        header {
+            background: #4a90e2;
+            padding: 15px 20px;
+            color: #fff;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+
+        button[type="button"] {
+            background: #4CAF50;
+            border: none;
+            padding: 10px 18px;
+            margin: 5px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            text-decoration: none;
+        }
+
+        button[type="button"]:hover{
+            background: #45a049;
+        }
+
+        button a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        form {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="number"] {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button[type="submit"] {
+            background: #007BFF;
+        }
+
+        button[type="submit"]:hover {
+            background: #0069d9;
+        }
+
+        h2 {
+            margin-top: 30px;
+            font-size: 20px;
+            color: #222;
+        }
+
+        img {
+            display: block;
+            margin: 15px auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            background: #fff;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        p a {
+            color: #4a90e2;
+            text-decoration: none;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Генерация QR-кода для товара</h1>
+    </header>
+    <main>
+        <button type="button">
+            <a href="{% url 'start_index' %}">Вернуться в меню</a>
+        </button>
+
+        <button type="button">
+            <a href="{% url 'catalog' %}">Каталог</a>
+        </button>
+
+        <form method="post">
+            {% csrf_token %}
+            <input type="number" name="product_id" placeholder="Введите ID товара">
+            <button type="submit">Сгенерировать QR</button>
+        </form>
+
+        {% if error_message %}
+            <p>{{ error_message }}</p>
+        {% endif %}
+
+        {% if qr_img %}
+            <h2>QR-код для товара {{ product_id }}</h2>
+            <img src="data:image/png;base64,{{ qr_img }}">
+            <p><a href="{{ link }}" target="_blank">{{ link }}</a></p>
+        {% endif %}
+    </main>
+</body>
+</html>

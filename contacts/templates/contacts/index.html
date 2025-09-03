@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Импорт/Экспорт Контактов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px 60px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #1f2937;
+        }
+
+        button {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 35px;
+            font-size: 1em;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(135deg, #4CAF50, #43a047);
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #45a049, #388e3c);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Импорт/Экспорт контактов</h1>
+        <a href="{% url 'import_contacts' %}"><button>Импорт</button></a>
+        <a href="{% url 'export_contacts' %}"><button>Экспорт</button></a>
+        <a href="{% url 'start_index' %}"><button>Вернуться в меню</button></a>
+    </div>
+</body>
+</html>

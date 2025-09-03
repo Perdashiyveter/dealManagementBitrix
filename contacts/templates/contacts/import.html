@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Импорт Контактов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1, h2 {
+            color: #1f2937;
+            text-align: center;
+        }
+
+        button {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 30px;
+            font-size: 1em;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(135deg, #4CAF50, #43a047);
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #45a049, #388e3c);
+        }
+
+        .rules {
+            background: #f0f7ff;
+            border-left: 6px solid #2196F3;
+            padding: 20px 25px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+        }
+
+        .rules h2 {
+            margin-top: 0;
+            text-align: center;
+            color: #1565C0;
+        }
+
+        .rules ol {
+            margin: 10px 0 0 20px;
+            padding: 0;
+        }
+
+        .rules li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        form {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form input[type="file"] {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            width: 80%;
+        }
+
+        form button[type="submit"] {
+            width: 50%;
+        }
+
+        .info, .error {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .info {
+            background: #e6f4ea;
+            color: #2e7d32;
+        }
+
+        .error {
+            background: #fdecea;
+            color: #c62828;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Импорт контактов</h1>
+
+        <div style="text-align:center;">
+            <a href="{% url 'export_contacts' %}"><button>Экспорт</button></a>
+            <a href="{% url 'start_index' %}"><button>Вернуться в меню</button></a>
+        </div>
+
+        <div class="rules">
+            <h2>Правила импорта файлов</h2>
+            <ol>
+                <li>Название столбцов файлов должно быть: <strong>имя, фамилия, номер телефона, почта, компания</strong>. Регистр не имеет значения.</li>
+                <li>Номер телефона должен быть в формате <strong>78005553535</strong> (без плюса).</li>
+                <li>Название компании должно полностью совпадать с названием компании в Битриксе, иначе контакт не будет добавлен.</li>
+                <li>Если контакт с таким телефоном или почтой уже существует, он не будет добавлен.</li>
+            </ol>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" action="{% url 'import_contacts' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Загрузить</button>
+        </form>
+
+        {% if info %}
+        <div class="info">
+            <h2>Результаты импорта</h2>
+            <p>Принято: {{ info.accepted }}</p>
+            <p>Отказано: {{ info.rejected }}</p>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="error">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

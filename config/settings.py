@@ -23,6 +23,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'deals',
+    'start',
+    'qrapp',
+    'employees',
+    'companies',
+    'contacts',
 
     'integration_utils.bitrix24'
 ]

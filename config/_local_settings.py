@@ -3,6 +3,8 @@ ALLOWED_HOSTS = ['*']
 
 from integration_utils.bitrix24.local_settings_class import LocalSettingsClass
 
+YANDEX_API_KEY = 'your-api-key'
+
 NGROK_URL = 'http://localhost:8000/'
 
 APP_SETTINGS = LocalSettingsClass(

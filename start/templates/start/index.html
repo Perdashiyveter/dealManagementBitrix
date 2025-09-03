@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главное меню</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 80px; }
+        ul { list-style: none; padding: 0; }
+        li { margin: 15px 0; }
+        a { text-decoration: none; font-size: 22px; color: #0073e6; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>Здравствуйте, {{ user.first_name }} {{ user.last_name }}</h1>
+    <ul>
+        {% for project in projects %}
+            <li><a href="{{ project.url }}">{{ project.name }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

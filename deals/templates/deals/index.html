@@ -48,6 +48,9 @@
     <h1>Здравствуйте, {{ user.first_name }} {{ user.last_name }}!</h1>
 
     <button id="openModal">Создать сделку</button>
+    <a href="{% url 'start_index' %}">
+        <button type="button">Вернуться в меню</button>
+    </a>
 
     <h2>10 ваших последних активных сделок</h2>
 
@@ -55,7 +58,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>№</th>
+                    <th>ID</th>
                     <th>Название</th>
                     <th>Этап</th>
                     <th>Дата начала</th>
